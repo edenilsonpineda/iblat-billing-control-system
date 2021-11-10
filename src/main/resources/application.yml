@@ -1,0 +1,78 @@
+#---------------------------------------------------- PROD -------------------------------------------------
+
+info:
+  component: iblat-billing-control-system
+  version: 1.0
+spring:
+  profiles:
+    # change to prod after the development process
+    active: development
+  application:
+    name: iblat-billing-control-system
+  datasource:
+    url: jdbc:mysql://192.168.50.113:3306/iblat_billing_db_v1.2
+    username: root
+    password: L8MAksghK!teK7Pbd34jT.BhggUM2
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 1 #numero minimo de conexiones inactivas mantenidas en el pool de conexiones de HikariCP
+      connection-timeout: 60000 #cantidad de milisegundos que el cliente espera por la conexion a la bd 20000
+      maximum-pool-size: 4 #numero de conexiones maximas usadas en el pool de conexiones
+      idle-timeout: 60000  #tiempo maximo de inactividad para la conexion 20000
+      max-lifetime: 1000 #tiempo de vida maximo en milisegundos de la conexion del pool de conexiones despues de que se cierre 10000
+      pool-name: ${spring.application.name}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: none  #[none|create|create-drop|validate|update] to SpringDataJPA AutoConfiguration - #true|false to SpringDataJPA HibernateJpaVendorAdapter
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl   
+  jackson:
+    time-zone: America/El_Salvador
+    locale: es_SV
+
+    
+#
+# TODO: This needs to be defined with Infrastructure team
+# 
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  compression:
+    mime-types:
+      - application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/css
+    enabled: true
+    
+security:
+  basic:
+    enabled: false
+
+
+          
+## -------------- HTTP CODES/MESSAGES CUSTOM CONSTANTS --------------
+## 
+app:
+  constant:
+    codes:
+      success:
+        code: 0
+        description: Success
+      notfound:
+        code: 404
+        description: Datos no encontrados
+        description2: Dato %s no encontradoy
+      badrequest:
+        code: 400
+        description: null
+      defaulterror:
+        code: 409
+        description: 'error en el proceso: '
+      unauthorized:
+        code: 403
+        invalidtoken: Token invalido
+        expiredtoken: Token expirado
+        invaliduser: usuario no valido
+      nulldata:
+        description: dato vacio
