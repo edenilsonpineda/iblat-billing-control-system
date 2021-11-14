@@ -47,7 +47,6 @@ public class Employee extends AbstractEntity{/**
 	@Column(name = "email")
 	private String email;
 	
-	
 	@NotBlank
 	@Size(max = 10)
 	private String dui;
@@ -65,7 +64,7 @@ public class Employee extends AbstractEntity{/**
 	private String isssNumber;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "")
+	@JoinColumn(name = "employee_statusId")
 	private EmployeeStatus status;
 	
 	

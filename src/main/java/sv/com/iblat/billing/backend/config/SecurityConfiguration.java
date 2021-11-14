@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,6 +24,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import lombok.extern.slf4j.Slf4j;
 import sv.com.iblat.billing.backend.core.service.impl.UserDetailsServiceImpl;
+import sv.com.iblat.billing.backend.events.CustomSuccessHandler;
 
 /**
  * Configures spring security, doing the following:
@@ -45,10 +45,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private static final String LOGIN_URL = "/login";
 	
 	**/
+	
+	@Autowired
+	private CustomSuccessHandler customSuccessHandler;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
 	
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
@@ -57,9 +59,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		@Override
 		public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 				throws IOException, ServletException {
-			if(SecurityUtils.isUserLoggedIn() && ((HttpServletRequest) request).getRequestURI().equals("/login")) {
-				log.info(String.format("User: '%1s' is already authenticated and trying to access the login page, redirecting...", SecurityUtils.getUsername()));
-				((HttpServletResponse) response).sendRedirect("/");
+			if(SecurityUtils.isUserLoggedIn() && ((HttpServletRequest) request).getRequestURI().equals("/login") || 
+						((HttpServletRequest) request).getRequestURI().equals("/registration")) {
+				log.info(String.format("User: '%1s' is already authenticated and trying to access the login or registration page, redirecting...", SecurityUtils.getUsername()));
+				if(SecurityUtils.isAdmin()) {
+					
+					((HttpServletResponse) response).sendRedirect("/admin/home");
+				}else {
+					((HttpServletResponse) response).sendRedirect("/");
+				}
 			}
 			
 			chain.doFilter(request, response);
@@ -101,15 +109,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 			.formLogin()
 				.permitAll()
+				.successHandler(customSuccessHandler)
 				.and()
 			.logout()
 				.permitAll()
 				.and()
 			.authorizeRequests()
-				.antMatchers("/login")
+				.antMatchers("/login","/registration")
 				.not().authenticated()
 				.and()
-			.authorizeRequests().anyRequest().authenticated();
+			.authorizeRequests()
+				.antMatchers("/user/**", "/").hasAuthority("USER")
+				.antMatchers("/admin/**","/api/**","/new","/edit/**","/delete/**").hasAuthority("ADMIN")
+				.anyRequest().authenticated();
 			
 	
 		

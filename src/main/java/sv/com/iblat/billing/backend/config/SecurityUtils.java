@@ -40,6 +40,19 @@ public final class SecurityUtils {
 		// Anonymous or no authentication.
 		return null;
 	}
+	
+	
+	public static boolean isAdmin() {
+		SecurityContext context = SecurityContextHolder.getContext();
+		Object principal = context.getAuthentication().getPrincipal();
+		if(principal instanceof UserDetails) {
+			UserDetails userDetails = (UserDetails) context.getAuthentication().getPrincipal();	
+			return userDetails.getAuthorities().stream().anyMatch(e -> e.getAuthority().equalsIgnoreCase("admin"));
+		}
+		
+		return false;
+	}
+
 
 	/**
 	 * Checks if access is granted for the current user for the given secured view,
@@ -81,6 +94,5 @@ public final class SecurityUtils {
 		return authentication != null
 			&& !(authentication instanceof AnonymousAuthenticationToken);
 	}
-
 
 }

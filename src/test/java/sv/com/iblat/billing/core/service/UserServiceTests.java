@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.slf4j.Slf4j;
-import sv.com.iblat.billing.backend.core.service.FilterableCrudService;
+import sv.com.iblat.billing.backend.core.service.facade.FilterableCrudService;
 import sv.com.iblat.billing.backend.model.entities.User;
 
 @Slf4j

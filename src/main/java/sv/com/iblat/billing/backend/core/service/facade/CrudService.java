@@ -1,4 +1,4 @@
-package sv.com.iblat.billing.backend.core.service;
+package sv.com.iblat.billing.backend.core.service.facade;
 
 import javax.persistence.EntityNotFoundException;
 

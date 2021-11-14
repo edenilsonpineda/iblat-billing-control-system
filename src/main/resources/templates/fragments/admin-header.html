@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/xhtml" 
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 </head>
 <body>
@@ -19,11 +19,28 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarMobileToggle">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						
-						<li class="nav-item">
-							<a class="nav-link" href="#"><i class="bi bi-file-earmark-check-fill"></i> Reportes</a>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#" id="Submenu-Dropdown"
+							role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bi bi-person-lines-fill"></i> Gestionar </a>
+							<ul class="dropdown-menu rounded-3"
+								aria-labelledby="Submenu-Dropdown">
+								<li><a class="dropdown-item" th:href="@{/admin/users}">Usuarios</a></li>
+								<li><a class="dropdown-item" th:href="@{/admin/employees}">Empleados</a></li>
+								<li><a class="dropdown-item" th:href="@{/admin/customers}">Clientes</a></li>
+								<li><a class="dropdown-item" th:href="@{/admin/suppliers}">Proveedores</a></li>
+							</ul></li>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#" id="Submenu-Dropdown"
+							role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Servicios </a>
+							<ul class="dropdown-menu rounded-3"
+								aria-labelledby="Submenu-Dropdown">
+								<li><a class="dropdown-item" href="#"> <i class="bi bi-credit-card-2-front-fill"></i> Pagos</a></li>
+								<li><a class="dropdown-item" href="#"> <i class="bi bi-collection-fill"></i> Cobros</a></li>
+							</ul></li>
+						<li class="nav-item"><a class="nav-link" href="#"></a>
 						</li>
-						
 					</ul>
 
 					<!-- Right Side -->
